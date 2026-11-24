@@ -14,9 +14,16 @@ No network, no input, no environment secrets.
 import os
 
 LETTER = "J"
+WORD = "juggling"  # the hidden word behind the letter
 
 
 def main() -> None:
+    # Guard the gate: the entry must be exactly one letter, A-Z, and the
+    # initial of its hidden word. Fail loudly instead of shipping a bad file.
+    if len(LETTER) != 1 or not ("A" <= LETTER <= "Z"):
+        raise ValueError("entry must be exactly one letter A-Z")
+    if LETTER != WORD[0].upper():
+        raise ValueError("letter must be the initial of its hidden word")
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
         f.write(LETTER)
